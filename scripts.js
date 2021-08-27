@@ -2,15 +2,21 @@ const button = document.getElementsByTagName('button')[0]
 const select = document.getElementById("currency-select")
 const select1 = document.getElementById("selection")
 
-const dolar = 5.22
-const euro = 6.11
-const bitcoin = 0.0000060
 
 
-const convertValues = () => {
+
+const convertValues = async () => {
     const inputReal = document.getElementById('input-real').value
     const realValueText = document.getElementById('real-value-text')
     const currencyValueText = document.getElementById('currency-value-text')
+
+
+    const data = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL").then(response => response.json())
+
+    const dolar = data.USDBRL.high
+    const euro = data.EURBRL.high
+    const bitcoin = data.BTCBRL.high
+    console.log(data)
 
     realValueText.innerHTML = inputReal
 
@@ -19,57 +25,57 @@ const convertValues = () => {
         currency: "BRL",
     }).format(inputReal)
 
-    if (select1.value ==="R$ Real brasileiro" && select.value === "US$ Dólar americano") {
+    if (select1.value === "R$ Real brasileiro" && select.value === "US$ Dólar americano") {
         currencyValueText.innerHTML = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
         }).format(inputReal / dolar);
     }
 
-    if (select1.value ==="R$ Real brasileiro" && select.value === "€ Euro") {
+    if (select1.value === "R$ Real brasileiro" && select.value === "€ Euro") {
         currencyValueText.innerHTML = new Intl.NumberFormat("de-DE", {
             style: "currency",
             currency: "EUR",
         }).format(inputReal / euro);
     }
 
-    if (select1.value ==="R$ Real brasileiro" && select.value === "₿ Bitcoin") {
+    if (select1.value === "R$ Real brasileiro" && select.value === "₿ Bitcoin") {
         currencyValueText.innerHTML = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "BTC",
         }).format(inputReal * bitcoin);
     }
 
-    if (select1.value ==="US$ Dólar americano" && select.value === "R$ Real brasileiro") {
+    if (select1.value === "US$ Dólar americano" && select.value === "R$ Real brasileiro") {
         realValueText.innerHTML = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
         }).format(inputReal)
-        
+
         currencyValueText.innerHTML = new Intl.NumberFormat("pt-br", {
             style: "currency",
             currency: "BRL",
         }).format(dolar * inputReal);
     }
 
-    if (select1.value === "€ Euro" && select.value === "R$ Real brasileiro" ) {
+    if (select1.value === "€ Euro" && select.value === "R$ Real brasileiro") {
         realValueText.innerHTML = new Intl.NumberFormat("de-DE", {
             style: "currency",
             currency: "EUR",
         }).format(inputReal)
-        
+
         currencyValueText.innerHTML = new Intl.NumberFormat("pt-br", {
             style: "currency",
             currency: "BRL",
-        }).format( euro * inputReal);
+        }).format(euro * inputReal);
     }
 
-    if (select1.value === "₿ Bitcoin" && select.value === "R$ Real brasileiro" ) {
+    if (select1.value === "₿ Bitcoin" && select.value === "R$ Real brasileiro") {
         realValueText.innerHTML = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "BTC",
         }).format(inputReal)
-        
+
         currencyValueText.innerHTML = new Intl.NumberFormat("pt-br", {
             style: "currency",
             currency: "BRL",
